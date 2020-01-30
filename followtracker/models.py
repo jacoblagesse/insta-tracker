@@ -2,7 +2,7 @@ from django.db import models
 import uuid
 import smtplib, ssl
 import instaloader
-from followtracker.constants import INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD, EMAIL, EMAIL_PASSWORD
+from django.conf.settings import INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD, EMAIL, EMAIL_PASSWORD
 
 class Follower(models.Model):
     username = models.CharField(max_length=200)
