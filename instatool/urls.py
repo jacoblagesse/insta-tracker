@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from followtracker import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.signupview, name='signup'),
+    path('success/', views.Success.as_view(), name='success'),
 ]

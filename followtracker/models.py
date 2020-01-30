@@ -22,7 +22,16 @@ class User(models.Model):
     _username = models.CharField(max_length=200)
     email = models.CharField(max_length=200, default='')
     num_followers = models.IntegerField(default=0)
-    num_following = models.IntegerField(default=0)
+    num_followees = models.IntegerField(default=0)
+    create_ts = models.DateTimeField(auto_now_add=True)
+
+    def get_initial_stats(self):
+        L = instaloader.Instaloader()
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        profile = instaloader.Profile.from_username(L.context, self._username)
+        self.num_followers = profile.followers
+        self.num_followees = profile.followees
+        self.save()
 
     def get_followers(self):
         L = instaloader.Instaloader()
@@ -48,7 +57,7 @@ class User(models.Model):
         L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
 
         profile = instaloader.Profile.from_username(L.context, self._username)
-        self.num_followers = profile.followees
+        self.num_followees = profile.followees
 
         follow_list = []
         count=0
@@ -86,7 +95,6 @@ class User(models.Model):
 
         print(disloyal_string)
         return disloyal_string
-
 
     def send_email(self):
 
