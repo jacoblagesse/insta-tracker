@@ -2,7 +2,12 @@ from django.db import models
 import uuid
 import smtplib, ssl
 import instaloader
-from django.conf.settings import INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD, EMAIL, EMAIL_PASSWORD
+from django.conf import settings
+
+INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
+INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
+EMAIL = settings.EMAIL
+EMAIL_PASSWORD = settings.EMAIL_PASSWORD
 
 class Follower(models.Model):
     username = models.CharField(max_length=200)
