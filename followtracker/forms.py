@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from followtracker.models import User
+from .models import User
 
 class UserForm(ModelForm):
     class Meta:

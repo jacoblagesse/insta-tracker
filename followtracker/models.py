@@ -5,9 +5,10 @@ import instaloader
 from django.conf import settings
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
-INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
 EMAIL = settings.EMAIL
 EMAIL_PASSWORD = settings.EMAIL_PASSWORD
+
+L = instaloader.Instaloader()
 
 class Follower(models.Model):
     username = models.CharField(max_length=200)
@@ -31,17 +32,12 @@ class User(models.Model):
     create_ts = models.DateTimeField(auto_now_add=True)
 
     def get_initial_stats(self):
-        L = instaloader.Instaloader()
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         profile = instaloader.Profile.from_username(L.context, self._username)
         self.num_followers = profile.followers
         self.num_followees = profile.followees
         self.save()
 
     def get_followers(self):
-        L = instaloader.Instaloader()
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-
         profile = instaloader.Profile.from_username(L.context, self._username)
         self.num_followers = profile.followers
 
@@ -58,9 +54,6 @@ class User(models.Model):
         self.save()
 
     def get_followees(self):
-        L = instaloader.Instaloader()
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-
         profile = instaloader.Profile.from_username(L.context, self._username)
         self.num_followees = profile.followees
 

@@ -1,12 +1,16 @@
 import os
 import django_heroku
+try:
+    from .local_settings import *
+except ImportError as e:
+    INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
+    INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
+    EMAIL = os.environ['EMAIL']
+    EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
+    pass
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
-INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
-EMAIL = os.environ['EMAIL']
-EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -79,7 +83,7 @@ RQ_QUEUES = {
     'default': {
         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DB': 0,
-        'DEFAULT_TIMEOUT': 500,
+        'DEFAULT_TIMEOUT': 3600,
     }
 }
 
