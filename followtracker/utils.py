@@ -21,7 +21,7 @@ def follow_user(username):
     logger.debug(follow_status)
     if follow_status['friendship_status']['following']:
         queue.enqueue(get_full_data, username)
-    elif friendships_show(profile.userid)['outgoing_request']:
+    elif api.friendships_show(profile.userid)['outgoing_request']:
         queue.enqueue(wait_for_accept, username, profile.userid, api, 0)
     else:
         logger.debug("ERROR: " + username + " could not be followed 1")
@@ -29,7 +29,7 @@ def follow_user(username):
 def wait_for_accept(username, userid, api, loop):
     time.sleep(60)
     if loop <= 5:
-        status = friendships_show(userid)
+        status = api.friendships_show(userid)
         if status['following']:
             queue.enqueue(get_full_data, username)
         elif status['outgoing_request']:
