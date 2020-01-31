@@ -6,6 +6,7 @@ from .models import User
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
 from django.core import management
+from utils import get_full_data
 import logging
 
 logger=logging.getLogger(__name__)
@@ -23,7 +24,7 @@ def signupview(request):
             user = form.save(commit=False)
             form.save()
             logger.debug(user._username)
-            management.call_command('getfulldata', user._username)
+            get_full_data(user)
             return HttpResponseRedirect('/success')
     else: 
         form = UserForm() 
