@@ -46,8 +46,8 @@ class User(models.Model):
         q = Queue(connection=conn)
         q.enqueue(self.get_followers)
         q.enqueue(self.get_followers)
-        q.enque(self.get_followees)
-        q.enque(self.send_email)
+        q.enqueue(self.get_followees)
+        q.enqueue(self.send_email)
 
     def get_followers(self):
         L = instaloader.Instaloader()
