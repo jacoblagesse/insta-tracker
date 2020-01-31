@@ -21,11 +21,6 @@ INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
 logger=logging.getLogger(__name__)
 L = instaloader.Instaloader()
 
-class SignUp(generic.CreateView):
-    form_class = UserForm
-    success_url = reverse_lazy('success')
-    template_name = 'followtracker/signup.html'
-
 def signupview(request): 
     if request.method == 'POST': 
         form = UserForm(request.POST, request.FILES) 
@@ -38,7 +33,7 @@ def signupview(request):
             _username = data['_username']
             email = data['email']
             user, created = User.objects.update_or_create(_username=_username, email=email)
-            form.save()
+            #form.save()
 
             logger.debug(user._username)
 
