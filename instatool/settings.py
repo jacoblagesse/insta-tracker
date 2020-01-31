@@ -79,7 +79,7 @@ RQ_QUEUES = {
     'default': {
         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DB': 0,
-        'DEFAULT_TIMEOUT': 360,
+        'DEFAULT_TIMEOUT': 500,
     },
     'with-sentinel': {
         'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
