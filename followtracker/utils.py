@@ -2,6 +2,7 @@ from rq import Queue
 from redis import Redis
 from .worker import conn
 import time
+from django.forms.models import model_to_dict
 from django.conf import settings
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
@@ -9,11 +10,11 @@ INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
 EMAIL = settings.EMAIL
 EMAIL_PASSWORD = settings.EMAIL_PASSWORD
 
-def get_full_data(user):
-    q = Queue(connection=conn)
-    q.enqueue(get_followers, user)
-    q.enqueue(get_followees, user)
-    q.enqueue(send_email, user)
+def get_full_data(username):
+    user = User.objects.get(_username=username)
+    user.get_followers()
+    user.get_followees()
+    user.send_email()
 
 def get_followers(user):
     L = instaloader.Instaloader()

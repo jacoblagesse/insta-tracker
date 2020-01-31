@@ -84,8 +84,6 @@ class User(models.Model):
             print(follow_list[count])
             count=count+1
 
-        self.get_followes_not_followers()
-
         self.save()
 
     def get_followes_not_followers(self):

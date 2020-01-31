@@ -7,6 +7,10 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
 from django.core import management
 from .utils import get_full_data
+from rq import Queue
+from redis import Redis
+from .worker import conn
+import time
 import logging
 
 logger=logging.getLogger(__name__)
@@ -24,7 +28,8 @@ def signupview(request):
             user = form.save(commit=False)
             form.save()
             logger.debug(user._username)
-            get_full_data(user)
+            q = Queue(connection=conn)
+            q.enqueue(get_full_data, user._username)
             return HttpResponseRedirect('/success')
     else: 
         form = UserForm() 
