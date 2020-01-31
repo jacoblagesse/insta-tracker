@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.signupview, name='signup'),
     path('success/', views.Success.as_view(), name='success'),
-    path('django-rq/', include('django_rq.urls')),
+]
+
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
 ]
