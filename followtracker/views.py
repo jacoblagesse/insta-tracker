@@ -28,7 +28,7 @@ def signupview(request):
             user = form.save(commit=False)
             form.save()
             logger.debug(user._username)
-            queue = django_rq.get_queue('high')
+            queue = django_rq.get_queue('default')
             queue.enqueue(get_full_data, user._username)
             return HttpResponseRedirect('/success')
     else: 
