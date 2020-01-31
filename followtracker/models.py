@@ -45,7 +45,6 @@ class User(models.Model):
     def get_full_data(self):
         q = Queue(connection=conn)
         q.enqueue(self.get_followers)
-        q.enqueue(self.get_followers)
         q.enqueue(self.get_followees)
         q.enqueue(self.send_email)
 
