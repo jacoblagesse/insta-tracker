@@ -23,7 +23,7 @@ def signupview(request):
             user = form.save(commit=False)
             form.save()
             logger.debug(user._username)
-            user.get_initial_stats()
+            management.call_command('getfulldata', user._username)
             return HttpResponseRedirect('/success')
     else: 
         form = UserForm() 
