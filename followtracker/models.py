@@ -4,7 +4,7 @@ import smtplib, ssl
 import instaloader
 from rq import Queue
 from redis import Redis
-from worker import conn
+from .worker import conn
 import time
 from django.conf import settings
 
