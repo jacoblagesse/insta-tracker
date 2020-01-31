@@ -1,2 +1,2 @@
 web: gunicorn instatool.wsgi
-worker: python worker.py
+worker: python instatool/manage.py rqworker high default low
