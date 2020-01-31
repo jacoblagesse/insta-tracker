@@ -1,4 +1,4 @@
-from rq import Queue
+import django_rq
 from redis import Redis
 from .worker import conn
 from .models import User
