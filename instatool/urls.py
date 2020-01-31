@@ -23,7 +23,3 @@ urlpatterns = [
     path('', views.signupview, name='signup'),
     path('success/', views.Success.as_view(), name='success'),
 ]
-
-urlpatterns += [
-    path('django-rq/', include('django_rq.urls'))
-]
