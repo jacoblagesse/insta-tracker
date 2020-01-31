@@ -2,6 +2,9 @@ from django.db import models
 import uuid
 import smtplib, ssl
 import instaloader
+from rq import Queue
+from redis import Redis
+import time
 from django.conf import settings
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
@@ -37,6 +40,13 @@ class User(models.Model):
         self.num_followers = profile.followers
         self.num_followees = profile.followees
         self.save()
+
+    def get_full_data(self):
+        q = Queue(connection=conn)
+        q.enqueue(self.get_followers)
+        q.enqueue(self.get_followers)
+        q.enque(self.get_followees)
+        q.enque(self.send_email)
 
     def get_followers(self):
         L = instaloader.Instaloader()

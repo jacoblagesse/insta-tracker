@@ -23,10 +23,7 @@ def signupview(request):
             user = form.save(commit=False)
             form.save()
             logger.debug(user._username)
-            management.call_command('getinitialstats', user._username)
-            management.call_command('getfollowers', user._username)
-            management.call_command('getfollowees', user._username)
-            management.call_command('sendemail', user._username)
+            user.get_initial_stats()
             return HttpResponseRedirect('/success')
     else: 
         form = UserForm() 
