@@ -1,6 +1,7 @@
 from rq import Queue
 from redis import Redis
 from .worker import conn
+from .models import User
 import time
 from django.forms.models import model_to_dict
 from django.conf import settings
