@@ -34,7 +34,7 @@ def wait_for_accept(username, userid, api, loop):
             queue.enqueue(get_full_data, username)
         elif status['outgoing_request']:
             loop += 1
-            queue.enqueue(wait_for_accept, username, api, loop)
+            queue.enqueue(wait_for_accept, userid, username, api, loop)
         else:
             logger.debug("ERROR: " + username + " could not be followed 2")
     else:
