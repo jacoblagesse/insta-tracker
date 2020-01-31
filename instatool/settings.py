@@ -77,10 +77,8 @@ DATABASES = {
 
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
-        'PORT': 6379,
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DB': 0,
-        'PASSWORD': 'idec if you hack this',
         'DEFAULT_TIMEOUT': 360,
     },
     'with-sentinel': {
