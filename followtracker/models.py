@@ -38,7 +38,7 @@ class User(models.Model):
         self.save()
 
     def get_followers(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         profile = instaloader.Profile.from_username(L.context, self._username)
         self.num_followers = profile.followers
 
@@ -55,7 +55,7 @@ class User(models.Model):
         self.save()
 
     def get_followees(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         profile = instaloader.Profile.from_username(L.context, self._username)
         self.num_followees = profile.followees
 
@@ -72,7 +72,7 @@ class User(models.Model):
         self.save()
 
     def get_followes_not_followers(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         followers = self._followers.all()
         followees = self._followees.all()
 
