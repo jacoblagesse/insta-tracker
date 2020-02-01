@@ -1,7 +1,11 @@
 from django.db import models
 import uuid
 import smtplib, ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 import instaloader
+import logging
 from django.conf import settings
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
@@ -10,6 +14,7 @@ EMAIL = settings.EMAIL
 EMAIL_PASSWORD = settings.EMAIL_PASSWORD
 
 L = instaloader.Instaloader()
+logger=logging.getLogger(__name__)
 
 class Follower(models.Model):
     username = models.CharField(max_length=200)
@@ -72,7 +77,7 @@ class User(models.Model):
 
         self.save()
 
-    def get_followes_not_followers(self):
+    def get_followes_not_followers(self, string_type):
         L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         followers = self._followers.all()
         followees = self._followees.all()
@@ -86,30 +91,63 @@ class User(models.Model):
             if followee.username in follower_usernames:
                 print(followee.username + ' follows you back')
             else:
-                print(followee.username + ' is a little bitch')
+                print(followee.username + ' does not follow you back')
                 dont_follow_back.append(followee.username)
 
-        disloyal_string = ''
+        plaintext_string = ''
+        html_string = ''
         for i in dont_follow_back:
-            disloyal_string = disloyal_string + i + '\n'
+            plaintext_string = plaintext_string + i + '\n'
+            html_string = html_string + i + '<br>'
 
-        print(disloyal_string)
-        return disloyal_string
+        if string_type == 1:
+            return html_string
+        else:
+            return plaintext_string
 
     def send_email(self):
 
         port = 465
         smtp_server = 'smtp.gmail.com'
 
-        subject = 'Instagram Data'
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = 'Instagram Data'
+        msg['From'] = EMAIL
+        msg['To'] = self.email
 
-        text = 'These users do not follow you back: \n' + self.get_followes_not_followers()
+        htmllist = self.get_followes_not_followers(1)
+        plaintext = 'These users do not follow you back: \n' + self.get_followes_not_followers(0)
 
-        message = 'Subject: {}\n\n{}'.format(subject, text)
+        html = """\
+        <html>
+            <head></head>
+            <body>
+                <img src="cid:image1"><br>
+                <h2>These users do not follow you back:</h2><br>
+                <p>{list}</p>
+            </body>
+        </html>
+        """.format(list=htmllist)
+
+        part1 = MIMEText(plaintext, 'plain')
+        part2 = MIMEText(html, 'html')
+
+        msg.attach(part1)
+        msg.attach(part2)
+
+        fp = open('followtracker/static/followtracker/images/emailheader.png', 'rb')
+        msgImage = MIMEImage(fp.read())
+        fp.close()
+
+        msgImage.add_header('Content-ID', '<image1>')
+        msg.attach(msgImage)
+
+        #message = 'Subject: {}\n\n{}'.format(subject, text)
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
             server.login(EMAIL, EMAIL_PASSWORD)
-            server.sendmail(EMAIL, self.email, message)
+            server.sendmail(EMAIL, self.email, msg.as_string())
+            logger.debug("email sent")
 
     def __str__(self):
         return self._username
