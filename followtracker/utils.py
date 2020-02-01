@@ -28,14 +28,11 @@ def follow_user(username):
 
 def wait_for_accept(username, userid):
     time.sleep(120)
-    if loop <= 5:
-        status = api.friendships_show(userid)
-        if status['following']:
-            queue.enqueue(get_full_data, username)
-        else:
-            logger.debug("ERROR: " + username + " could not be followed 2")
+    status = api.friendships_show(userid)
+    if status['following']:
+        queue.enqueue(get_full_data, username)
     else:
-        logger.debug("ERROR: " + username + " did not accept request in time")
+        logger.debug("ERROR: " + username + " could not be followed 2")
 
 def get_full_data(username):
     profile = instaloader.Profile.from_username(L.context, username)

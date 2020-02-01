@@ -5,6 +5,7 @@ import instaloader
 from django.conf import settings
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
+INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
 EMAIL = settings.EMAIL
 EMAIL_PASSWORD = settings.EMAIL_PASSWORD
 
