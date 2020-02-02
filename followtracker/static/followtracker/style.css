@@ -7,9 +7,8 @@ body {
 }
 
 .formstyle {
-    background-color: #3BB9FF;
-    padding-left: 40px;
-    padding-right: 40px;
+    margin-left: 6%;
+    margin-top: 1%;
 }
 
 .login {
@@ -17,7 +16,6 @@ body {
     margin-top: -13.1%;
     margin-left: 67.2%;
     max-width: 800px;
-    position: absolute;
 }
 
 .success {
@@ -40,56 +38,42 @@ body {
 }
 
 .intro h1 {
-    margin-top: 3%;
-    margin-left: 6%;
+    margin-top: 0%;
+    margin-left: 5.5%;
     font-size: 150px;
     color: #3BB9FF;
-    position: absolute;
     font-weight: bold;
 }
 
 .intro h2 {
-    margin-top: 13%;
+    margin-top: -1%;
     margin-left: 6%;
     font-size: 25px;
     color: black;
-    position: absolute;
 }
 
-.login label {
-    color: white;
+.intro {
+  margin-top: 20%
+}
+
+.intro img {
+  margin-left: 50%;
+  margin-top: -55%;
+  width: 800px;
+  height: 800px;
+  z-index: -1;
+  position: relative;
 }
 
 .formtext {
     color: blue;
 }
 
-.login button {
-  background-color: #3BB9FF;
+button {
+  background-color: white;
   border: white;
   border-width: 2px;
-  color: white;
+  color: #3BB9FF;
   font-weight: bold;
-}
-
-.circle {
-  height: 360px;
-  width: 360px;
-  margin-left: 65%; 
-  margin-top: 16%; 
-  background-color: #3BB9FF;
-  border-radius: 50%;
-  position: relative;
-  z-index: -1;
-}
-
-.parallelogram {
-    width: 100px;
-    height: 50px;
-    margin-left: 65.1%; 
-    margin-top: -7%; 
-    transform: skew(-20deg);
-    background: #3BB9FF;
-    position: relative;
-    z-index: -1;
+  margin-top: -1%
 }

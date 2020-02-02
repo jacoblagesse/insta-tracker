@@ -3,7 +3,7 @@ from followtracker.models import User, Follower, Followee
 
 class UserAdmin(admin.ModelAdmin):
 	list_display = (
-        '_username',
+        'username',
         'email',
         'create_ts',
     )

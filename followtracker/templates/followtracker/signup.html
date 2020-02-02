@@ -1,4 +1,5 @@
 {% load bootstrap4 %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 <head>
@@ -12,22 +13,26 @@
         <h2>Master your social data with our analysis. Free for a limited time.</h2>
     </div>
     <div>
-        <div class="circle"></div>
-        <div class="parallelogram"></div>
-        <div class=success id="success">
-            <h1>You're All Set!</h1>
-            <h2>You should get an email with your stats. It may take a little while, depending on your account's popularity. Be sure to check your spam!</h2>
-        </div>
-        <div class=login id="login">
-            <form method="post" class="formstyle" id="myForm">
-                {% csrf_token %}
-                {% bootstrap_form form %}
-            </form>
-            <button onclick="Switch()">Start Tracking</button>
-        </div>
+        {% block content %}
+        <form method="post" class="formstyle" id="myForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.email|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                <button type="submit">Get Started</button>
+            </div>
+        </form>
+        {% endblock %}
+    </div>
+    <div class="intro">
+        <img src="{% static 'followtracker/images/biglogo.jpg' %}">
     </div>
 </body>
-
+<!--
 <script>
 
 function Switch() {
@@ -37,3 +42,4 @@ function Switch() {
 }
 
 </script>
+-->

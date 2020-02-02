@@ -31,21 +31,21 @@ class Followee(models.Model):
         return self.username
 
 class User(models.Model):
-    _username = models.CharField(max_length=200)
+    username = models.CharField(max_length=200)
     email = models.CharField(max_length=200, default='')
     num_followers = models.IntegerField(default=0)
     num_followees = models.IntegerField(default=0)
     create_ts = models.DateTimeField(auto_now_add=True)
 
     def get_initial_stats(self):
-        profile = instaloader.Profile.from_username(L.context, self._username)
+        profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
         self.num_followees = profile.followees
         self.save()
 
     def get_followers(self):
         L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-        profile = instaloader.Profile.from_username(L.context, self._username)
+        profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
 
         follow_list = []
@@ -62,7 +62,7 @@ class User(models.Model):
 
     def get_followees(self):
         L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-        profile = instaloader.Profile.from_username(L.context, self._username)
+        profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followees = profile.followees
 
         follow_list = []
@@ -150,6 +150,6 @@ class User(models.Model):
             logger.debug("email sent")
 
     def __str__(self):
-        return self._username
+        return self.username
 
 

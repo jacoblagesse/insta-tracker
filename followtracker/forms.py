@@ -5,8 +5,13 @@ from .models import User
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ('_username', 'email')
+        fields = ('username', 'email')
         labels = {
-            '_username': ('Instagram Username'),
-            'email': ('Email'),
+            'username': '',
+            'email': '',
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = 'Instagram Username'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'

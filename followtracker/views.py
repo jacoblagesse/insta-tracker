@@ -30,15 +30,15 @@ def signupview(request):
             
             L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
             
-            _username = data['_username']
+            username = data['username']
             email = data['email']
-            user, created = User.objects.update_or_create(_username=_username, email=email)
+            user, created = User.objects.update_or_create(username=username, email=email)
             #form.save()
 
-            logger.debug(user._username)
+            logger.debug(user.username)
 
             queue = django_rq.get_queue('default')
-            queue.enqueue(follow_user, user._username)
+            queue.enqueue(follow_user, user.username)
 
             return HttpResponseRedirect('/success')
     else: 

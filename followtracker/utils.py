@@ -38,7 +38,7 @@ def wait_for_accept(username, userid):
 
 def get_full_data(username):
     profile = instaloader.Profile.from_username(L.context, username)
-    user = User.objects.get(_username=username)
+    user = User.objects.get(username=username)
     user.get_followers()
     user.get_followees()
     user.send_email()
