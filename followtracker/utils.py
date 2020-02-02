@@ -15,6 +15,7 @@ queue = django_rq.get_queue('default')
 
 def follow_user(username):
     api = Client(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+    L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
     profile = instaloader.Profile.from_username(L.context, username)
     profile_id = profile.userid
     follow_status = api.friendships_create(profile.userid)
