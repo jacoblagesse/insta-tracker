@@ -1,5 +1,7 @@
 import os
 import django_heroku
+import dj_database_url
+
 try:
     from .local_settings import *
 except ImportError as e:
@@ -7,7 +9,12 @@ except ImportError as e:
     INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
     EMAIL = os.environ['EMAIL']
     EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
-    pass
+    SECRET_KEY = os.environ['SECRET_KEY']
+    DATABASE = os.environ['DATABASE']
+    DATABASE_USER = os.environ['DATABASE_USER']
+    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
+    DATABASE_HOST = os.environ['DATABASE_HOST']
+    DATABASE_PORT = os.environ['DATABASE_PORT']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,12 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '()#7!a()u#7960vjk4h!r$9xix_f@j8xp_z(q1)2-%r&buy^50'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', DATABASE_HOST]
 
 
 # Application definition
@@ -77,8 +83,12 @@ WSGI_APPLICATION = 'instatool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DATABASE,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
     }
 }
 
@@ -128,3 +138,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 django_heroku.settings(locals())
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
