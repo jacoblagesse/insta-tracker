@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     help = "Queue update jobs for each user in database"
 
-	def add_arguments(self, parser):
+    def add_arguments(self, parser):
         parser.add_argument('username', type=str)
 
     def handle(self, *args, **options):
