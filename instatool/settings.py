@@ -5,16 +5,18 @@ import dj_database_url
 try:
     from .local_settings import *
 except ImportError as e:
+    pass
     INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
     INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
     EMAIL = os.environ['EMAIL']
     EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
     SECRET_KEY = os.environ['SECRET_KEY']
-    DATABASE = os.environ['DATABASE']
+    DATABASE_NAME = os.environ['DATABASE_NAME']
     DATABASE_USER = os.environ['DATABASE_USER']
     DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
     DATABASE_HOST = os.environ['DATABASE_HOST']
     DATABASE_PORT = os.environ['DATABASE_PORT']
+    DATABASE_URL = os.environ['DATABASE_URL']
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,13 +79,15 @@ WSGI_APPLICATION = 'instatool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DATABASE,
+        'NAME': DATABASE_NAME,
         'USER': DATABASE_USER,
         'PASSWORD': DATABASE_PASSWORD,
         'HOST': DATABASE_HOST,
         'PORT': DATABASE_PORT,
     }
 }
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 RQ_QUEUES = {
     'default': {
@@ -131,4 +135,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 django_heroku.settings(locals())
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

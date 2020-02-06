@@ -7,6 +7,7 @@ from email.mime.image import MIMEImage
 import instaloader
 import logging
 from django.conf import settings
+from datetime import datetime
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
 INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
@@ -36,6 +37,7 @@ class User(models.Model):
     num_followers = models.IntegerField(default=0)
     num_followees = models.IntegerField(default=0)
     create_ts = models.DateTimeField(auto_now_add=True)
+    last_update_ts = models.DateTimeField(auto_now_add=True)
 
     def get_initial_stats(self):
         profile = instaloader.Profile.from_username(L.context, self.username)
@@ -49,14 +51,12 @@ class User(models.Model):
         self.num_followers = profile.followers
 
         follow_list = []
-        count=0
+
         for _follower in profile.get_followers():
             _follower, created = self._followers.update_or_create(
                 username=_follower.username,
             )
             follow_list.append(_follower.username)
-            print(follow_list[count])
-            count=count+1
 
         self.save()
 
@@ -66,14 +66,12 @@ class User(models.Model):
         self.num_followees = profile.followees
 
         follow_list = []
-        count=0
+
         for _followee in profile.get_followees():
             _followee, created = self._followees.update_or_create(
                 username=_followee.username,
             )
             follow_list.append(_followee.username)
-            print(follow_list[count])
-            count=count+1
 
         self.save()
 
@@ -105,7 +103,7 @@ class User(models.Model):
         else:
             return plaintext_string
 
-    def send_email(self):
+    def send_initial_email(self):
 
         port = 465
         smtp_server = 'smtp.gmail.com'
@@ -148,6 +146,86 @@ class User(models.Model):
             server.login(EMAIL, EMAIL_PASSWORD)
             server.sendmail(EMAIL, self.email, msg.as_string())
             logger.debug("email sent")
+
+    def update_followers(self):
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        profile = instaloader.Profile.from_username(L.context, self.username)
+        self.num_followers = profile.followers
+
+        new_follower_list = []
+        unfollower_list = []
+
+        #----- Make lists of old and new follower usernames -----
+        follower_list = []
+        for _follower in profile.get_followers():
+            follower_list.append(_follower.username)
+
+        old_follower_list = []
+        followers = self._followers.all()
+        for follower in followers:
+            old_follower_list.append(follower.username)
+
+        #----- Create lists of new followers and unfollowers -----
+        for follower_username in follower_list:
+            if follower_username not in old_follower_list:
+                new_follower_list.append(follower_username)
+
+        for follower_username in old_follower_list:
+            if follower_username not in follower_list:
+                unfollower_list.append(follower_username)
+
+        #----- Delete all old followers, replace with new list -----
+        self._followers.all().delete()
+
+        for follower_username in follower_list:
+            _follower, created = self._followers.update_or_create(
+                username=_follower_username,
+            )
+
+        self.last_update_ts = datetime.now()
+        self.save()
+
+        return new_follower_list, unfollower_list
+
+    def update_followees(self):
+        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        profile = instaloader.Profile.from_username(L.context, self.username)
+        self.num_followees = profile.followees
+
+        new_followee_list = []
+        unfollowee_list = []
+
+        #----- Make lists of old and new followee usernames -----
+        followee_list = []
+        for _followee in profile.get_followees():
+            followee_list.append(_followee.username)
+
+        old_followee_list = []
+        followees = self._followees.all()
+        for followee in followees:
+            old_followee_list.append(followee.username)
+
+        #----- Create lists of new followees and unfollowees -----
+        for followee_username in followee_list:
+            if followee_username not in old_followee_list:
+                new_followee_list.append(followee_username)
+
+        for followee_username in old_followee_list:
+            if followee_username not in followee_list:
+                unfollowee_list.append(followee_username)
+
+        #----- Delete all old followees, replace with new list -----
+        self._followees.all().delete()
+
+        for followee_username in followee_list:
+            _followee, created = self._followees.update_or_create(
+                username=_followee_username,
+            )
+
+        self.last_update_ts = datetime.now()
+        self.save()
+
+        return new_followee_list, unfollowee_list
 
     def __str__(self):
         return self.username

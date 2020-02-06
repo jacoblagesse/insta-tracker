@@ -41,4 +41,10 @@ def get_full_data(username):
     user = User.objects.get(username=username)
     user.get_followers()
     user.get_followees()
-    user.send_email()
+    user.send_inital_email()
+
+def update_data(user):
+    new_follower_list, unfollower_list = user.update_followers()
+    new_follower_list, unfollower_list = user.update_followers()
+    for username in unfollower_list:
+        logger.debug(username)
