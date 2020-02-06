@@ -5,6 +5,7 @@ import django_rq
 import logging
 
 logger = logging.getLogger('instahacker.management')
+queue = django_rq.get_queue('default')
 
 class Command(BaseCommand):
 
