@@ -18,7 +18,7 @@ except ImportError as e:
     DATABASE_PORT = os.environ['DATABASE_PORT']
     DATABASE_URL = os.environ['DATABASE_URL']
 
-os.environ['DATABASE_URL'] = 'postgres://jacoblagesse:wolfwar1492@localhost:5432/instatool'
+#os.environ['DATABASE_URL'] = 'postgres://jacoblagesse:wolfwar1492@localhost:5432/instatool'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
