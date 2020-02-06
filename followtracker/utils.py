@@ -21,6 +21,7 @@ def follow_user(username):
     follow_status = api.friendships_create(profile.userid)
     logger.debug(follow_status)
     if follow_status['friendship_status']['following']:
+        #get_full_data(username)
         queue.enqueue(get_full_data, username)
     elif api.friendships_show(profile.userid)['outgoing_request']:
         queue.enqueue(wait_for_accept, username, profile_id)
@@ -41,10 +42,11 @@ def get_full_data(username):
     user = User.objects.get(username=username)
     user.get_followers()
     user.get_followees()
-    user.send_inital_email()
+    user.send_initial_email()
 
 def update_data(user):
     new_follower_list, unfollower_list = user.update_followers()
     new_follower_list, unfollower_list = user.update_followers()
     for username in unfollower_list:
+        print(username)
         logger.debug(username)

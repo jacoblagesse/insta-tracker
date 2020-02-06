@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from followtracker.models import User
+from followtracker.utils import update_data
 import django_rq
 import logging
 
@@ -12,11 +13,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        try:
-            user = User.objects.get(_username=username)
-        except User.DoesNotExist:
-            logger.debug(f"No user with username {username}.")
-        else:
+        for user in User.objects.all():
             queue.enqueue(update_data, user)
+            #update_data(user)
+
+
 
         

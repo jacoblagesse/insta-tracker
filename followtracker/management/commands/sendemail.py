@@ -15,7 +15,7 @@ class Command(BaseCommand):
         username = options['username']
 
         try:
-            user = User.objects.get(_username=username)
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
             logger.debug(f"No user with username {username}.")
         else:

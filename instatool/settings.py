@@ -18,12 +18,13 @@ except ImportError as e:
     DATABASE_PORT = os.environ['DATABASE_PORT']
     DATABASE_URL = os.environ['DATABASE_URL']
 
+os.environ['DATABASE_URL'] = 'postgres://jacoblagesse:wolfwar1492@localhost:5432/instatool'
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', DATABASE_HOST]
-
 
 # Application definition
 
@@ -87,7 +88,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=False)
 
 RQ_QUEUES = {
     'default': {
@@ -134,4 +135,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-django_heroku.settings(locals())
+django_heroku.settings(locals(), logging=not DEBUG, databases=not DEBUG)

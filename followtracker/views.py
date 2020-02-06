@@ -37,6 +37,8 @@ def signupview(request):
 
             logger.debug(user.username)
 
+            #follow_user(user.username)
+
             queue = django_rq.get_queue('default')
             queue.enqueue(follow_user, user.username)
 

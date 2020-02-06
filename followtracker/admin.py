@@ -31,6 +31,7 @@ class UserAdmin(admin.ModelAdmin):
         'username',
         'email',
         'create_ts',
+        'last_update_ts',
     )
 admin.site.register(User, UserAdmin)
 

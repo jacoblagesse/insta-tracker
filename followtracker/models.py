@@ -179,7 +179,7 @@ class User(models.Model):
 
         for follower_username in follower_list:
             _follower, created = self._followers.update_or_create(
-                username=_follower_username,
+                username=follower_username,
             )
 
         self.last_update_ts = datetime.now()
@@ -218,7 +218,7 @@ class User(models.Model):
         self._followees.all().delete()
 
         for followee_username in followee_list:
-            _followee, created = self._followees.update_or_create(
+            _followee, created = self.followees.update_or_create(
                 username=_followee_username,
             )
 
