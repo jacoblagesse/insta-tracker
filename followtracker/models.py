@@ -38,7 +38,6 @@ class InstaUser(models.Model):
     num_followees = models.IntegerField(default=0)
     create_ts = models.DateTimeField(auto_now_add=True)
     last_update_ts = models.DateTimeField(auto_now_add=True)
-    receiving_weekly_updates = models.BooleanField(default=False)
 
     def get_initial_stats(self):
         profile = instaloader.Profile.from_username(L.context, self.username)
