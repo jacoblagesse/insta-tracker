@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from followtracker.models import User
+from followtracker.models import InstaUser
 from followtracker.utils import update_data
+from datetime import date
 import django_rq
 import logging
 
@@ -12,10 +13,12 @@ class Command(BaseCommand):
     help = "Queue update jobs for a user in the database"
 
     def handle(self, *args, **options):
-        
-        for user in User.objects.all():
-            queue.enqueue(update_data, user)
-            #update_data(user)
+        if date.today().weekday() == 4:
+            for user in InstaUser.objedcts.all():
+                queue.enqueue(update_data, user)
+                #update_data(user)
+        else:
+            pass
 
 
 

@@ -13,6 +13,7 @@ colorama==0.3.9
 cycler==0.10.0
 dj-database-url==0.5.0
 Django==2.2.7
+django-bmemcached==0.3.0
 django-bootstrap==0.2.4
 django-bootstrap4==1.0.1
 django-crispy-forms==1.8.1
@@ -46,6 +47,7 @@ psycopg2==2.8.4
 pyparsing==2.4.2
 PyQt5==5.13.1
 PyQt5-sip==4.19.19
+python-binary-memcached==0.29.0
 python-dateutil==2.8.0
 pytz==2019.3
 PyYAML==3.13
@@ -61,6 +63,7 @@ sqlparse==0.3.0
 termcolor==1.1.0
 texttable==0.9.1
 tzlocal==2.0.0
+uhashring==1.1
 urllib3==1.24.3
 virtualenv==16.7.7
 wcwidth==0.1.7

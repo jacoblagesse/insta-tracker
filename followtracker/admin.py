@@ -1,5 +1,5 @@
 from django.contrib import admin
-from followtracker.models import User, Follower, Followee
+from followtracker.models import InstaUser, Follower, Followee
 
 class InputFilter(admin.SimpleListFilter):
     template = 'admin/input_filter.html'
@@ -16,9 +16,9 @@ class InputFilter(admin.SimpleListFilter):
         )        
         yield all_choice
 
-class UserFilter(InputFilter):
+class InstaUserFilter(InputFilter):
     parameter_name = 'user'
-    title = ('User')
+    title = ('InstaUser')
 
     def queryset(self, request, queryset):
         if self.value() is not None:
@@ -26,14 +26,14 @@ class UserFilter(InputFilter):
                 user__username__icontains=self.value()
             )
 
-class UserAdmin(admin.ModelAdmin):
+class InstaUserAdmin(admin.ModelAdmin):
     list_display = (
         'username',
         'email',
         'create_ts',
         'last_update_ts',
     )
-admin.site.register(User, UserAdmin)
+admin.site.register(InstaUser, InstaUserAdmin)
 
 class FollowerAdmin(admin.ModelAdmin):
     list_display = (
@@ -41,7 +41,7 @@ class FollowerAdmin(admin.ModelAdmin):
         'user',
     )
     list_filter = (
-        UserFilter,
+        InstaUserFilter,
     )
 admin.site.register(Follower, FollowerAdmin)
 
@@ -51,6 +51,6 @@ class FolloweeAdmin(admin.ModelAdmin):
         'user',
     )
     list_filter = (
-        UserFilter,
+        InstaUserFilter,
     )
 admin.site.register(Followee, FolloweeAdmin)

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from followtracker.models import User
+from followtracker.models import InstaUser
 import logging
 
 logger = logging.getLogger('instahacker.management')
@@ -15,7 +15,7 @@ class Command(BaseCommand):
         username = options['username']
 
         try:
-            user = User.objects.get(username=username)
+            user = InstaUser.objects.get(username=username)
         except User.DoesNotExist:
             logger.debug(f"No user with username {username}.")
         else:

@@ -6,35 +6,29 @@ body {
     overflow: hidden;
 }
 
-.formstyle {
-    margin-left: 6%;
-    margin-top: 1%;
+img {
+  margin-left: 50%;
+  margin-top: -55%;
+  width: 800px;
+  height: 800px;
+  z-index: -1;
+  position: relative;
+  float: left;
 }
 
-.login {
-    text-align: center;
-    margin-top: -13.1%;
-    margin-left: 67.2%;
-    max-width: 800px;
+.button {
+  background-color: white;
+  border: white;
+  border-width: 0px;
+  color: #3BB9FF;
+  font-weight: bold;
+  margin-top: -1%
 }
 
-.success {
-    margin-top: -11%;
-    margin-left: 66.9%;
-    max-width: 300px;
-    position: absolute;
-    text-align: center;
-    visibility: hidden;
-}
+/* INTRO PAGE */
 
-.success h1 {
-    font-size: 30px;
-    color: white;
-}
-
-.success h2 {
-    font-size: 20px;
-    color: white;
+.intro {
+  margin-top: 20%;
 }
 
 .intro h1 {
@@ -52,28 +46,58 @@ body {
     color: black;
 }
 
-.intro {
-  margin-top: 20%
+.formstyle {
+    margin-left: 6%;
+    margin-top: 1%;
 }
 
-.intro img {
-  margin-left: 50%;
-  margin-top: -55%;
-  width: 800px;
-  height: 800px;
-  z-index: -1;
-  position: relative;
+.login {
+    text-align: center;
+    margin-top: -13.1%;
+    margin-left: 67.2%;
+    max-width: 800px;
 }
 
 .formtext {
     color: blue;
 }
 
-button {
-  background-color: white;
-  border: white;
-  border-width: 2px;
-  color: #3BB9FF;
-  font-weight: bold;
-  margin-top: -1%
+/* SUCCESS PAGE */
+
+.success {
+    margin-left: 10%;
+    max-width: 800px;
+    margin-top: 8%;
+}
+
+.success h1 {
+    font-size: 65px;
+    font-weight: bold;
+    color: black;
+}
+
+.success h2 {
+    margin-top: -10%
+    font-size: 30px;
+    color: #3BB9FF;
+    font-weight: bold;
+}
+
+.success h3 {
+    font-size: 16px;
+    color: black;
+}
+
+.success ul {
+    font-size: 16px;
+    color: black;
+}
+
+/* SIGNUP PAGE */
+
+.signup {
+    width: 500px;
+    margin: 50px auto 0px;
+    text-align: center;
+    margin-top: 10%;
 }

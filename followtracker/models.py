@@ -19,25 +19,26 @@ logger=logging.getLogger(__name__)
 
 class Follower(models.Model):
     username = models.CharField(max_length=200)
-    user = models.ForeignKey('User', related_name='_followers', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('InstaUser', related_name='_followers', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.username
 
 class Followee(models.Model):
     username = models.CharField(max_length=200)
-    user = models.ForeignKey('User', related_name='_followees', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('InstaUser', related_name='_followees', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.username
 
-class User(models.Model):
+class InstaUser(models.Model):
     username = models.CharField(max_length=200)
     email = models.CharField(max_length=200, default='')
     num_followers = models.IntegerField(default=0)
     num_followees = models.IntegerField(default=0)
     create_ts = models.DateTimeField(auto_now_add=True)
     last_update_ts = models.DateTimeField(auto_now_add=True)
+    receiving_weekly_updates = models.BooleanField(default=False)
 
     def get_initial_stats(self):
         profile = instaloader.Profile.from_username(L.context, self.username)
@@ -46,7 +47,7 @@ class User(models.Model):
         self.save()
 
     def get_followers(self):
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        L.load_session_from_file(INSTAGRAM_USERNAME)
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
 
@@ -61,7 +62,7 @@ class User(models.Model):
         self.save()
 
     def get_followees(self):
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        L.load_session_from_file(INSTAGRAM_USERNAME)
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followees = profile.followees
 
@@ -76,7 +77,8 @@ class User(models.Model):
         self.save()
 
     def get_followes_not_followers(self, string_type):
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        L.load_session_from_file(INSTAGRAM_USERNAME)
+        #L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         followers = self._followers.all()
         followees = self._followees.all()
 
@@ -148,7 +150,7 @@ class User(models.Model):
             logger.debug("email sent")
 
     def update_followers(self):
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        L.load_session_from_file(INSTAGRAM_USERNAME)
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
 
@@ -188,7 +190,7 @@ class User(models.Model):
         return new_follower_list, unfollower_list
 
     def update_followees(self):
-        L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+        L.load_session_from_file(INSTAGRAM_USERNAME)
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followees = profile.followees
 

@@ -1,10 +1,11 @@
-from .models import User
+from .models import InstaUser
 from instagram_private_api import Client
 import instaloader
 import django_rq
 import time
 import logging
 from django.conf import settings
+from datetime import date
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
 INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
@@ -15,7 +16,7 @@ queue = django_rq.get_queue('default')
 
 def follow_user(username):
     api = Client(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-    L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+    L.load_session_from_file(INSTAGRAM_USERNAME)
     profile = instaloader.Profile.from_username(L.context, username)
     profile_id = profile.userid
     follow_status = api.friendships_create(profile.userid)
@@ -39,14 +40,15 @@ def wait_for_accept(username, userid):
 
 def get_full_data(username):
     profile = instaloader.Profile.from_username(L.context, username)
-    user = User.objects.get(username=username)
+    user = InstaUser.objects.get(username=username)
     user.get_followers()
     user.get_followees()
     user.send_initial_email()
 
 def update_data(user):
-    new_follower_list, unfollower_list = user.update_followers()
-    new_follower_list, unfollower_list = user.update_followers()
-    for username in unfollower_list:
-        print(username)
-        logger.debug(username)
+    if date.today().weekday() == 4:
+        new_follower_list, unfollower_list = user.update_followers()
+        new_follower_list, unfollower_list = user.update_followers()
+        for username in unfollower_list:
+            print(username)
+            logger.debug(username)

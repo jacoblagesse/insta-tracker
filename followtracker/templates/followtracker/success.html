@@ -7,16 +7,22 @@
     <link rel="stylesheet" type="text/css" href="{% static 'followtracker/style.css' %}" />
 </head>
 <body>
-    <div class="intro">
-        <h1>InstaTracker</h1>
-        <h2>Master your social data with our analysis. Free for a limited time.</h2>
+    <div class="success">
+        <h1>You're all set.</h1>
+        <h3>If your account is private, you should get a follow request from an instagram account named <b style="color:#3BB9FF;">data_fetcher</b>. You must accept the request in the next few minutes for us to proceed with collecting data.</h3>
+        <h3>Depending on the popularity of your account, it may take us some time to scrape your data. For accounts with fewer than <b style="color:#3BB9FF">1000</b> followers and following less than <b style="color:#3BB9FF">1000</b> people, you should get an email with your results in just a few minutes. Be sure to check your spam folder!</h3>
+        <h2 style="margin-top: 5%;">Is my account safe?</h2>
+        <h3>Yes. Most other Instagram data services have you sign into your account so that they can collect your data using <b>your personal credentials</b>. This increases the risk that Instagram will flag your account for suspicious activity, possibly resulting in a ban. Because all of our data is collected through an external bot account, your account will remain safe and secure. It is <b>NEVER</b> a good idea to give a third-party app your password!</h3>
+        <h2 style="margin-top: 5%;">Want more data?</h2>
+        <h3>The initial email you received is just a taste of what this service has to offer. For just <b>$0.99</b> a month, you will get access to a user dashboard with enhanced popularity graphs and metrics. You will also gain access to our weekly email reports, which give you updates such as:</h3>
+        <ul>
+            <li>Who unfollows your account</li>
+            <li>Post performance data</li>
+            <li>Follower engagement ratios</li>
+        </ul>
+        <h3><b>All premium features are free for a limited time!</b></h3>
+        <a class="button" href="{% url 'signup' %}" role="button">Sign Up</a>
+        <!--<button style="margin-left: -1%;" type="submit">Learn More</button>-->
     </div>
-    <div>
-        <div class="success" style="visibility: visible; margin-top: 6.4%">
-            <h1>You're All Set!</h1>
-            <h2>You should get an email with your stats. It may take a little while, depending on your account's popularity. Be sure to check your spam!</h2>
-        </div>
-        <div class="circle"></div>
-        <div class="parallelogram"></div>
-    </div>
+    <img style="margin-top: -45%;" src="{% static 'followtracker/images/biglogo.jpg' %}">
 </body>

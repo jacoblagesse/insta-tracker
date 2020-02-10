@@ -1,0 +1,46 @@
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'followtracker/style.css' %}" />
+</head>
+<body>
+    <div class="intro">
+        <h1>InstaTracker</h1>
+        <h2>Master your social data with our analysis. Free for a limited time.</h2>
+    </div>
+    <div>
+        {% block content %}
+        <form method="post" class="formstyle" id="myForm">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.email|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                <button class="button" type="submit">Get Started</button>
+            </div>
+            <p style="font-size: 14px"><i>Already have an account?</i> <a class="button" href="{% url 'login' %}" role="button">Sign In</a></p>
+        </form>
+        {% endblock %}
+    </div>
+    <div class="intro">
+        <img src="{% static 'followtracker/images/biglogo.jpg' %}">
+    </div>
+</body>
+<!--
+<script>
+
+function Switch() {
+    document.getElementById("login").style.visibility = "hidden";
+    document.getElementById("success").style.visibility = "visible";
+    document.getElementById("myForm").submit();
+}
+
+</script>
+-->
