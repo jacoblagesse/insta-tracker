@@ -46,7 +46,7 @@ class InstaUser(models.Model):
         self.save()
 
     def get_followers(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
 
@@ -61,7 +61,7 @@ class InstaUser(models.Model):
         self.save()
 
     def get_followees(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followees = profile.followees
 
@@ -76,7 +76,7 @@ class InstaUser(models.Model):
         self.save()
 
     def get_followes_not_followers(self, string_type):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
         #L.login(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
         followers = self._followers.all()
         followees = self._followees.all()
@@ -149,7 +149,7 @@ class InstaUser(models.Model):
             logger.debug("email sent")
 
     def update_followers(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followers = profile.followers
 
@@ -189,7 +189,7 @@ class InstaUser(models.Model):
         return new_follower_list, unfollower_list
 
     def update_followees(self):
-        L.load_session_from_file(INSTAGRAM_USERNAME)
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
         profile = instaloader.Profile.from_username(L.context, self.username)
         self.num_followees = profile.followees
 

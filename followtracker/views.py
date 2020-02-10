@@ -31,7 +31,7 @@ def initialview(request):
         if form.is_valid():
             data = form.cleaned_data
             
-            L.load_session_from_file(INSTAGRAM_USERNAME)
+            L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
             
             username = data['username']
             email = data['email']

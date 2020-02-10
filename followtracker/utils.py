@@ -16,7 +16,7 @@ queue = django_rq.get_queue('default')
 
 def follow_user(username):
     api = Client(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
-    L.load_session_from_file(INSTAGRAM_USERNAME)
+    L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
     profile = instaloader.Profile.from_username(L.context, username)
     profile_id = profile.userid
     follow_status = api.friendships_create(profile.userid)
@@ -30,7 +30,7 @@ def follow_user(username):
         logger.debug("ERROR: " + username + " could not be followed 1")
 
 def wait_for_accept(username, userid):
-    api = Client(INSTAGRAM_USERNAME, INSTAGRAM_PASSWORD)
+    L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
     time.sleep(120)
     status = api.friendships_show(userid)
     if status['following']:
