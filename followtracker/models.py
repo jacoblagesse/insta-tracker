@@ -221,7 +221,7 @@ class InstaUser(models.Model):
         self._followees.all().delete()
 
         for followee_username in followee_list:
-            _followee, created = self.followees.update_or_create(
+            _followee, created = self._followees.update_or_create(
                 username=_followee_username,
             )
 
