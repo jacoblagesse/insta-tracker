@@ -52,9 +52,10 @@ def get_full_data(username):
 def update_data(user):
     print(f"Starting to update data for {user.username}")
     new_follower_list, unfollower_list = user.update_followers()
-    new_follower_list, unfollower_list = user.update_followers()
+    new_followee_list, unfollowee_list = user.update_followees()
     for username in unfollower_list:
-        print(username)
         print(f"{username} unfollowed {user.username}")
+    for username in new_follower_list:
+        print(f"{username} followed {user.username}")
     user.last_update_ts = datetime.now(tz=timezone.utc)
     print(f"Finished updating data for {user.username}")
