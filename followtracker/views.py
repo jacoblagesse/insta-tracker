@@ -40,7 +40,7 @@ def initialview(request):
 
             instauser, created = InstaUser.objects.update_or_create(username=username, email=email)
 
-            logger.debug(instauser.username)
+            print(f"{instauser.username} created")
 
             #follow_user(instauser.username)
             queue = django_rq.get_queue('default')

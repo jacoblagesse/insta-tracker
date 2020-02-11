@@ -59,7 +59,7 @@ class InstaUser(models.Model):
             follow_list.append(_follower.username)
 
         self.save()
-        logger.debug(f"Finished getting followers for {self.username}")
+        print(f"Finished getting followers for {self.username}")
 
     def get_followees(self):
         L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
@@ -76,7 +76,7 @@ class InstaUser(models.Model):
             follow_list.append(_followee.username)
 
         self.save()
-        logger.debug(f"Finished getting followees for {self.username}")
+        print(f"Finished getting followees for {self.username}")
 
     def get_followes_not_followers(self, string_type):
         L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
@@ -149,7 +149,7 @@ class InstaUser(models.Model):
         with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
             server.login(EMAIL, EMAIL_PASSWORD)
             server.sendmail(EMAIL, self.email, msg.as_string())
-        logger.debug("Email sent")
+        print("Email sent")
 
     def update_followers(self):
         L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
@@ -186,7 +186,6 @@ class InstaUser(models.Model):
                 username=follower_username,
             )
 
-        self.last_update_ts = datetime.now()
         self.save()
 
         return new_follower_list, unfollower_list
@@ -226,7 +225,6 @@ class InstaUser(models.Model):
                 username=_followee_username,
             )
 
-        self.last_update_ts = datetime.now()
         self.save()
 
         return new_followee_list, unfollowee_list
