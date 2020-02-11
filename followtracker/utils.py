@@ -6,6 +6,7 @@ import time
 import logging
 from django.conf import settings
 from datetime import datetime
+from django.utils import timezone
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
 INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
