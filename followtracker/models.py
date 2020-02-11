@@ -7,7 +7,6 @@ from email.mime.image import MIMEImage
 import instaloader
 import logging
 from django.conf import settings
-from datetime import datetime
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
 INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
@@ -187,6 +186,7 @@ class InstaUser(models.Model):
             )
 
         self.save()
+        print(f"Updated followers for {self.username}")
 
         return new_follower_list, unfollower_list
 
@@ -226,6 +226,7 @@ class InstaUser(models.Model):
             )
 
         self.save()
+        print(f"Updated followees for {self.username}")
 
         return new_followee_list, unfollowee_list
 
