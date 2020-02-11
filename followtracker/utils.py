@@ -5,7 +5,6 @@ import django_rq
 import time
 import logging
 from django.conf import settings
-from datetime import date
 
 INSTAGRAM_USERNAME = settings.INSTAGRAM_USERNAME
 INSTAGRAM_PASSWORD = settings.INSTAGRAM_PASSWORD
@@ -41,14 +40,18 @@ def wait_for_accept(username, userid):
 def get_full_data(username):
     profile = instaloader.Profile.from_username(L.context, username)
     user = InstaUser.objects.get(username=username)
+    logger.debug(f"Starting to get followers for {username}")
     user.get_followers()
+    logger.debug(f"Starting to get followees for {username}")
     user.get_followees()
+    logger.debug(f"Starting process of sending initial email to {user.email}")
     user.send_initial_email()
 
 def update_data(user):
-    if date.today().weekday() == 4:
-        new_follower_list, unfollower_list = user.update_followers()
-        new_follower_list, unfollower_list = user.update_followers()
-        for username in unfollower_list:
-            print(username)
-            logger.debug(username)
+    logger.debug(f"Starting to update data for {user.username}")
+    new_follower_list, unfollower_list = user.update_followers()
+    new_follower_list, unfollower_list = user.update_followers()
+    for username in unfollower_list:
+        print(username)
+        logger.debug(f"{username} unfollowed {user.username}")
+    logger.debug(f"Finished updating data for {user.username}")

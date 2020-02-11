@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
         try:
             user = InstaUser.objects.get(username=username)
-        except User.DoesNotExist:
+        except InstaUser.DoesNotExist:
             logger.debug(f"No user with username {username}.")
         else:
             logger.debug("pp")
