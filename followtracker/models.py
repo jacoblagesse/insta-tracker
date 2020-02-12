@@ -222,7 +222,7 @@ class InstaUser(models.Model):
 
         for followee_username in followee_list:
             _followee, created = self._followees.update_or_create(
-                username=_followee_username,
+                username=followee_username,
             )
 
         self.save()
