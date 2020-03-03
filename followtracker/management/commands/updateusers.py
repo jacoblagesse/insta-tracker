@@ -15,7 +15,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if date.today().weekday() == 1:
             print("It is Friday my dudes, starting to update user data.")
-            for user in InstaUser.objedcts.all():
+            for user in InstaUser.objects.all():
                 queue.enqueue(update_data, user.username)
                 #update_data(user)
         else:
