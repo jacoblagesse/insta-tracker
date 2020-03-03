@@ -39,6 +39,7 @@ class FollowerAdmin(admin.ModelAdmin):
     list_display = (
         'username',
         'user',
+        'num_followers',
     )
     list_filter = (
         InstaUserFilter,

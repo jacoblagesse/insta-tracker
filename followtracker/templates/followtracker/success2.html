@@ -1,0 +1,22 @@
+{% load bootstrap4 %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'followtracker/style.css' %}" />
+</head>
+<body>
+    <div class="success">
+        <h1>You're all set.</h1>
+        <h3>If your account is private, you should get a follow request from an instagram account named <b style="color:#3BB9FF;">data_fetcher</b>. You must accept the request in the next few minutes for us to proceed with collecting data.</h3>
+        <h3>Depending on the popularity of your account, it may take us some time to scrape your data. For accounts with fewer than <b style="color:#3BB9FF">1000</b> followers and following less than <b style="color:#3BB9FF">1000</b> people, you should get an email with your results in just a few minutes. Be sure to check your spam folder!</h3>
+        <h2 style="margin-top: 5%;">Is my account safe?</h2>
+        <h3>Yes. Most other Instagram data services have you sign into your account so that they can collect your data using <b>your personal credentials</b>. This increases the risk that Instagram will flag your account for suspicious activity, possibly resulting in a ban. Because all of our data is collected through an external bot account, your account will remain safe and secure. It is <b>NEVER</b> a good idea to give a third-party app your password!</h3>
+        <h2 style="margin-top: 5%;">Want more?</h2>
+        <h3>You can sign up for our weekly email report <a class="button" style="text-decoration: underline;" href="{% url 'signup' %}" role="button">here</a></h3>
+        
+        <!--<button style="margin-left: -1%;" type="submit">Learn More</button>-->
+    </div>
+    <img style="margin-top: -45%;" src="{% static 'followtracker/images/biglogo.jpg' %}">
+</body>

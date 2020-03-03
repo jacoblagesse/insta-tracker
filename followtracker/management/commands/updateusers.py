@@ -13,10 +13,10 @@ class Command(BaseCommand):
     help = "Queue update jobs for a user in the database"
 
     def handle(self, *args, **options):
-        if date.today().weekday() == 4:
+        if date.today().weekday() == 1:
             print("It is Friday my dudes, starting to update user data.")
             for user in InstaUser.objedcts.all():
-                queue.enqueue(update_data, user)
+                queue.enqueue(update_data, user.username)
                 #update_data(user)
         else:
             print("It is not Friday, data isn't updating.")

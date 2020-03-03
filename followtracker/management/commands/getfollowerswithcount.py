@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from followtracker.models import InstaUser
-from followtracker.utils import update_data
+from followtracker.utils import get_follower_counts
+from datetime import date
 import django_rq
 import logging
 
@@ -9,7 +10,7 @@ queue = django_rq.get_queue('default')
 
 class Command(BaseCommand):
 
-    help = "Queue update jobs for each user in database"
+    help = "Queue update jobs for a user in the database"
 
     def add_arguments(self, parser):
         parser.add_argument('username', type=str)
@@ -22,7 +23,9 @@ class Command(BaseCommand):
         except User.DoesNotExist:
             print(f"No user with username {username}.")
         else:
-            queue.enqueue(update_data, user)
-            #update_data(user)
+            queue.enqueue(get_follower_counts, user.username)
+            #get_follower_counts(user.username)
+
+
 
         

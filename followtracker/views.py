@@ -52,7 +52,7 @@ def initialview(request):
     return render(request, 'followtracker/initial.html', {'form' : form})
 
 class Success(TemplateView):
-    template_name = 'followtracker/success.html'
+    template_name = 'followtracker/success2.html'
 
 #@login_required
 class SignUp(generic.CreateView):
@@ -65,10 +65,13 @@ def signup(request):
         form = SignUpForm(request.POST, initial={'username': request.session['username'], 'email': request.session['email']})
         if form.is_valid():
             form.save()
-            user = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user, password=raw_password)
+            user = authenticate(username=username, password=raw_password)
             login(request, user)
+            instaUser = InstaUser.objects.get(username=username)
+            instaUser.get_emails = True
+            instaUser.save()
             return HttpResponseRedirect('/')
     else:
         form = SignUpForm(initial={'username': request.session['username'], 'email': request.session['email']})

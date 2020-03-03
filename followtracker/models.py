@@ -19,6 +19,7 @@ logger=logging.getLogger(__name__)
 class Follower(models.Model):
     username = models.CharField(max_length=200)
     user = models.ForeignKey('InstaUser', related_name='_followers', on_delete=models.CASCADE, null=True)
+    num_followers = models.IntegerField(default=0)
 
     def __str__(self):
         return self.username
@@ -37,6 +38,7 @@ class InstaUser(models.Model):
     num_followees = models.IntegerField(default=0)
     create_ts = models.DateTimeField(auto_now_add=True)
     last_update_ts = models.DateTimeField(auto_now_add=True)
+    get_emails = models.BooleanField(default=0)
 
     def get_initial_stats(self):
         profile = instaloader.Profile.from_username(L.context, self.username)
@@ -56,6 +58,20 @@ class InstaUser(models.Model):
                 username=_follower.username,
             )
             follow_list.append(_follower.username)
+
+        self.save()
+        print(f"Finished getting followers for {self.username}")
+
+    def get_followers_with_counts(self):
+        L.load_session_from_file(INSTAGRAM_USERNAME, filename='instaloader.session')
+        profile = instaloader.Profile.from_username(L.context, self.username)
+
+        for _follower in profile.get_followers():
+            follower_profile = instaloader.Profile.from_username(L.context, _follower.username)
+            _follower, created = self._follower_with_count.update_or_create(
+                username=_follower.username,
+                num_followers=follower_profile.followers
+            )
 
         self.save()
         print(f"Finished getting followers for {self.username}")
@@ -185,6 +201,17 @@ class InstaUser(models.Model):
                 username=follower_username,
             )
 
+        #----- Check for changed usernames -----
+        for new_user in new_follower_list:
+            new_profile = instaloader.Profile.from_username(L.context, new_user)
+            new_profile_id = new_profile.userid
+            for old_user in unfollower_list:
+                old_profile = instaloader.Profile.from_username(L.context, old_user)
+                old_profile_id = new_profile.userid
+                if new_profile_id == old_profile_id:
+                    new_follower_list.remove(new_user)
+                    old_follower_list.remove(old_user)
+
         self.save()
         print(f"Updated followers for {self.username}")
 
@@ -225,12 +252,78 @@ class InstaUser(models.Model):
                 username=followee_username,
             )
 
+        #----- Check for changed usernames -----
+        for new_user in new_followee_list:
+            new_profile = instaloader.Profile.from_username(L.context, new_user)
+            new_profile_id = new_profile.userid
+            for old_user in unfollowee_list:
+                old_profile = instaloader.Profile.from_username(L.context, old_user)
+                old_profile_id = new_profile.userid
+                if new_profile_id == old_profile_id:
+                    new_followee_list.remove(new_user)
+                    old_followee_list.remove(old_user)
+
         self.save()
         print(f"Updated followees for {self.username}")
 
         return new_followee_list, unfollowee_list
 
+    def send_update_email(self, unfollower_list, new_follower_list):
+
+        plaintext_string1 = ''
+        plaintext_string2 = ''
+        html_string1 = ''
+        html_string2 = ''
+
+        for i in unfollower_list:
+            plaintext_string1 = plaintext_string1 + i + '\n'
+            html_string1 = html_string1 + i + '<br>'
+
+        for i in new_follower_list:
+            plaintext_string2 = plaintext_string2 + i + '\n'
+            html_string2 = html_string2 + i + '<br>'
+
+        port = 465
+        smtp_server = 'smtp.gmail.com'
+
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = 'Instagram Weekly Report'
+        msg['From'] = EMAIL
+        msg['To'] = self.email
+
+        plaintext = 'These users unfollwed you: \n\n' + plaintext_string1 + '\nThese users followed you:\n\n' + plaintext_string2
+
+        html = """\
+        <html>
+            <head></head>
+            <body>
+                <img src="cid:image1"><br>
+                <h2>These users unfollowed you:</h2><br>
+                <p>{list1}</p>
+                <h2>These users followed you:</h2><br>
+                <p>{list2}</p>
+            </body>
+        </html>
+        """.format(list1=html_string1, list2=html_string2)
+
+        part1 = MIMEText(plaintext, 'plain')
+        part2 = MIMEText(html, 'html')
+
+        msg.attach(part1)
+        msg.attach(part2)
+
+        fp = open('followtracker/static/followtracker/images/emailheader.png', 'rb')
+        msgImage = MIMEImage(fp.read())
+        fp.close()
+
+        msgImage.add_header('Content-ID', '<image1>')
+        msg.attach(msgImage)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(EMAIL, EMAIL_PASSWORD)
+            server.sendmail(EMAIL, self.email, msg.as_string())
+        print("Email sent")
+
     def __str__(self):
         return self.username
-
-
