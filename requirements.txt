@@ -64,7 +64,7 @@ termcolor==1.1.0
 texttable==0.9.1
 tzlocal==2.0.0
 uhashring==1.1
-urllib3==1.24.3
+urllib3==1.26.5
 virtualenv==16.7.7
 wcwidth==0.1.7
 websocket-client==0.56.0
